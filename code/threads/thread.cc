@@ -433,3 +433,39 @@ Thread::SelfTest()
     kernel->currentThread->Yield();
     SimpleThread(0);
 }
+
+#ifdef FILESYS
+bool 
+Thread::FileIsOpened(int num) {
+  int i;
+  for (i = 0; i < NUM_OPENED_FILES; ++i) {
+    if (openedFiles[i] == num) {
+      return TRUE;
+    }
+  }
+  return FALSE;
+}
+bool 
+Thread::AddFile(int num) {
+  int i;
+  for (i = 0; i < NUM_OPENED_FILES; ++i) {
+    if (openedFiles[i] == -1) {
+      openedFiles[i] = num;
+      return TRUE;
+    }
+  }
+  return FALSE;
+}
+bool 
+Thread::RemoveFile(int num) {
+  int i;
+  for (i = 0; i < NUM_OPENED_FILES; ++i) {
+    if (openedFiles[i] == num) {
+      openedFiles[i] = -1;
+      return TRUE;
+    }
+  }
+  return FALSE;
+}
+
+#endif

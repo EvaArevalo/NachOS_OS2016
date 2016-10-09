@@ -140,6 +140,8 @@ FileSystem::FileSystem(bool format)
         freeMapFile = new OpenFile(FreeMapSector);
         directoryFile = new OpenFile(DirectorySector);
     }
+	
+
 }
 
 //----------------------------------------------------------------------
@@ -234,6 +236,7 @@ FileSystem::Open(char *name)
     directory->FetchFrom(directoryFile);
     sector = directory->Find(name); 
     if (sector >= 0) 		
+	//NOTE: method for find file in dir
 	openFile = new OpenFile(sector);	// name was found in directory 
     delete directory;
     return openFile;				// return NULL if not found
@@ -336,5 +339,37 @@ FileSystem::Print()
     delete freeMap;
     delete directory;
 } 
+
+///EVA
+
+///----------------------------------------------------------------
+///Read and Write call the respective subrutines for the file
+///part of the openfile.cc methods on the opened file
+///the result of the subroutine is returned as an int if no 
+///errors, -1 is returned otherwise.
+///NOTE PENDING: the case where open is null is ok, but what if 
+///open fails?
+///---------------------------------------------------------------
+int
+FileSystem::Read(int file_id,const char *from, int numBytes){
+	OpenFile *file = fileDescriptorTable[fileIndex];
+	if (file==NULL){
+		DEBUG("Error getting file to read \n");
+		return -1;
+	}
+	return file->Read(into,numBytes);
+}
+
+int
+FileSystem::Write(int file_id, const char *from, numBytes){
+	OpenFile *file = fileDescriptorTable[file_id];
+	if(file==NULL){
+		DEBUG("Error getting file to write \n")
+		return -1;
+	}
+	return file->Write(into,numBytes);
+}
+
+///EVA
 
 #endif // FILESYS_STUB

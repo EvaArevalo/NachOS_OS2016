@@ -106,6 +106,11 @@ class Thread {
 	int getID() { return (ID); }
     void Print() { cout << name; }
     void SelfTest();		// test whether thread impl is working
+	///EVA
+	bool FileIsOpened(int num) ;
+	bool AddFile(int num);
+	bool RemoveFile(int num);
+	//EVA
 
   private:
     // some of the private data for this class is listed above

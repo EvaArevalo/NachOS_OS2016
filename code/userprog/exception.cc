@@ -112,7 +112,7 @@ ExceptionHandler(ExceptionType which)
 			return;	
 			ASSERTNOTREACHED();
             break;
-	case SC_PrintInt:
+		case SC_PrintInt:
 			DEBUG(dbgSys, "PrintInt " << kernel->machine->ReadRegister(4) << "\n");
 			SysPrintInt((int)kernel->machine->ReadRegister(4));
 			cout << '\n';
@@ -124,6 +124,45 @@ ExceptionHandler(ExceptionType which)
 			return;
 			ASSERTNOTREACHED();
             break;
+		///EVA
+		case SC_Open:
+			DEBUG(dbgAddr, "Openning File\n" );
+			char* filename = &(kernel->machine->ReadRegister(4));
+			SysOpenFile(filename);
+			kernel->machine->WriteRegister(PrevPCReg, kernel->machine->ReadRegister(PCReg));
+			kernel->machine->WriteRegister(PCReg, kernel->machine->ReadRegister(PCReg) + 4);
+			kernel->machine->WriteRegister(NextPCReg, kernel->machine->ReadRegister(PCReg)+4);
+			return;
+			ASSERTNOTREACHED
+			break;
+		case SC_Close:
+			DEBUG(dbgAddr, "Closing File\n" );
+			SysClose();
+			kernel->machine->WriteRegister(PrevPCReg, kernel->machine->ReadRegister(PCReg));
+			kernel->machine->WriteRegister(PCReg, kernel->machine->ReadRegister(PCReg) + 4);
+			kernel->machine->WriteRegister(NextPCReg, kernel->machine->ReadRegister(PCReg)+4);
+			return;
+			ASSERTNOTREACHED();
+			break;
+		case SC_Read:
+			DEBUG(dbgAddr, "Reading File\n" );
+			SysRead();
+			kernel->machine->WriteRegister(PrevPCReg, kernel->machine->ReadRegister(PCReg));
+			kernel->machine->WriteRegister(PCReg, kernel->machine->ReadRegister(PCReg) + 4);
+			kernel->machine->WriteRegister(NextPCReg, kernel->machine->ReadRegister(PCReg)+4);
+			return;
+			ASSERTNOTREACHED();
+			break;
+		case SC_Write:
+			DEBUG(dbgAddr, "Writing to File\n" << "\n");
+			SysWrite();
+			kernel->machine->WriteRegister(PrevPCReg, kernel->machine->ReadRegister(PCReg));
+			kernel->machine->WriteRegister(PCReg, kernel->machine->ReadRegister(PCReg) + 4);
+			kernel->machine->WriteRegister(NextPCReg, kernel->machine->ReadRegister(PCReg)+4);
+			return;
+			ASSERTNOTREACHED();
+			break;
+		///EVA
         case SC_Exit:
 			DEBUG(dbgAddr, "Program exit\n");
             val=kernel->machine->ReadRegister(4);

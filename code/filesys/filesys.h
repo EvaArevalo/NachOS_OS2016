@@ -85,6 +85,12 @@ class FileSystem {
     void List();			// List all the files in the file system
 
     void Print();			// List all the files and their contents
+	
+	///EVA
+	int Read(int file_id,const char *from, int numBytes);
+	
+	int Write(int file_id, const char *from, numBytes);
+	///EVA
 
   private:
    OpenFile* freeMapFile;		// Bit map of free disk blocks,
