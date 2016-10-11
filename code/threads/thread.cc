@@ -439,7 +439,7 @@ bool
 Thread::FileIsOpened(int num) {
   int i;
   for (i = 0; i < NUM_OPENED_FILES; ++i) {
-    if (openedFiles[i] == num) {
+    if (fileSystem->fileDescriptorTable[i] == num) {
       return TRUE;
     }
   }
@@ -449,8 +449,8 @@ bool
 Thread::AddFile(int num) {
   int i;
   for (i = 0; i < NUM_OPENED_FILES; ++i) {
-    if (openedFiles[i] == -1) {
-      openedFiles[i] = num;
+    if (fileSystem->fileDescriptorTable[i] == -1) {
+      fileSystem->fileDescriptorTable[i] = num;
       return TRUE;
     }
   }
@@ -460,8 +460,8 @@ bool
 Thread::RemoveFile(int num) {
   int i;
   for (i = 0; i < NUM_OPENED_FILES; ++i) {
-    if (openedFiles[i] == num) {
-      openedFiles[i] = -1;
+    if (fileSystem->fileDescriptorTable[i] == num) {
+      fileSystem->fileDescriptorTable[i] = -1;
       return TRUE;
     }
   }

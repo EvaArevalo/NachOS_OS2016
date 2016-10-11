@@ -126,7 +126,9 @@ void SysClose()
 	
 	//close file
 	delete fileSystem->fileDescriptorTable[file_id];
-	fileDescriptorTable[file_id]==NULL;
+	fileSystem->fileDescriptorTable[file_id]==NULL;
+	
+	kernel->currentThread->RemoveFile(val);
 	return;
 }
 
